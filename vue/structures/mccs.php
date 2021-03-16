@@ -1,0 +1,67 @@
+<?php	
+	$pdo = new ConnexionBdd;
+	$connexion = $pdo->connect($conf);
+	$titre = 'Mains Courantes Journalière';
+	$mccs = new Mccs;
+	$mccList = $mccs->getMccs($connexion);	
+	
+	$contenu = "<table class='table table-bordered' id='dataTable' width='100%' cellspacing='0'>";
+		$contenu .="<thead>";
+			$contenu .="<tr>";
+				$contenu .="<th scope='col'>Calendrier</th>";
+				$contenu .="<th scope='col'>Id</th>";
+				$contenu .="<th scope='col'>Titre</th>";
+				$contenu .="<th scope='col'>Date de début</th>";
+				$contenu .="<th scope='col'>Date de fin</th>";
+				$contenu .="<th scope='col'>Voir</th>";
+				$contenu .="<th scope='col'>Modifier</th>";
+				$contenu .="<th scope='col'>Supprimer</th>";
+			$contenu .="</tr>";
+		$contenu .="</thead>";
+		$contenu .="<tbody>";
+			while($row = $mccList->fetch()) {
+				if(isset($acces[$row['id_evenement']])) $accesMcc = $acces[$row['id_evenement']];
+				else  $accesMcc ='';
+				$contenu .="<tr>";
+					$contenu .="<td>";
+						$contenu .=$row['nom'];
+					$contenu .="</td>";
+					$contenu .="<td>";
+						$contenu .=$row['id_evenement'];
+					$contenu .="</td>";
+					$contenu .="<td>";
+						$contenu .=$row['titre_evenement'];
+					$contenu .="</td>";
+					$contenu .="<td>";
+						$contenu .=$row['date_debut_evenement'];
+					$contenu .="</td>";
+					$contenu .="<td>";
+						$contenu .=$row['date_fin_evenement'];
+					$contenu .="</td>";
+					$contenu .='<td>';
+						$contenu .='<a type="button" target="_blank" class="btn btn-success btn-icon-split"  href="'.$conf['adresseredirect'].'/mc/'.$row['id_evenement'].'">';
+							$contenu .='<span class="icon text-white-50"><i class="fas fa-share"></i></span>';
+							$contenu .='<span class="text hidden">Voir la Main courante</span>';
+						$contenu .='</a>';
+					$contenu .='</td>';
+					$contenu .='<td>';
+						$contenu .='<a type="button" class="btn btn-primary btn-icon-split"  href="?action=mccs&mcc='.$row['id_evenement'].'">';
+							$contenu .='<span class="icon text-white-50"><i class="fas fa-cog"></i></span>';
+							$contenu .='<span class="text hidden">Modifier</span>';
+						$contenu .='</a>';
+					$contenu .='</td>';
+					$contenu .="<td>";
+						$contenu .="<form method='post' action='' class='supp'>";
+							$contenu .='<input type="hidden" name="actionInterne" value="supMcc">';
+							$contenu .='<input type="hidden" name="mccId" value="'.$row['id_evenement'].'">';
+							$contenu .="<button class='btn btn-danger btn-icon-split'>";
+								$contenu .="<span class='icon text-white-50'><i class='fas fa-trash'></i></span>";
+								$contenu .="<span class='text hidden'>Supprimer</span>";
+							$contenu .="</button>";							
+						$contenu .="</form>";
+					$contenu .="</td>";
+				$contenu .="</tr>";
+			}
+		$contenu .= "</tbody>";
+	$contenu .="</table>";	
+?>

@@ -1,0 +1,3 @@
+<?php
+	$titre = 'Profile';
+?>

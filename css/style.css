@@ -1,0 +1,12 @@
+.tooltip-inner {
+    display:table !important;
+	text-align:left !important;	
+}
+.tooltip-inner li{
+   white-space:nowrap;
+}
+@media (max-width: 1200px){
+	.hidden{
+		display:none !important;
+	}
+}
